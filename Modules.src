@@ -57,7 +57,6 @@ Modules.FindWritePerms = function(folder)
 	end if
 
 	if folder.has_permission("w") then
-		print("Found writable folder: " + folder.path)
 		return folder
 	end if
 
@@ -109,7 +108,6 @@ check_log_exists = function(log_file_name, log_path, shell)
 	for folder in parent_folder.get_folders
 		if folder.name.indexOf("log") != -1 then
 			if log_is_in_folder(log_file_name, folder) then
-				print("Log file already exists in " + folder.name)
 				return true
 			end if
 		end if
@@ -124,7 +122,6 @@ check_logs_folder = function(logs_folder)
 	max_files = 240
 	log_folder_contents = logs_folder.get_files
 	if len(log_folder_contents) > max_files then
-		print("Log folder is full. Creating new folder...")
 
 		// check how many "logs" folders exist
 		parent_folder = logs_folder.parent
@@ -160,21 +157,17 @@ Modules.FetchLog = function(remote_shell, home_shell, log_path)
 	log_file_name = remote_shell.host_computer.public_ip + "_system.log"
 
 	if check_log_exists(log_file_name, log_path, home_shell) then
-		print("Log file already exists in " + log_path + ".")
 		return true
 	end if
 
 	log_folder = home_shell.host_computer.File(log_path)
 	log_folder = check_logs_folder(log_folder)
-	print("Log folder: " + log_folder)
 	log_path = log_folder.path
 
 	if not log_folder then
 		print("Error: Unable to create or find logs folder.")
 		return false
 	end if
-
-	print("Fetching log file from " + remote_shell.host_computer.public_ip + "...")
 
 	result = remote_shell.scp("/var/system.log", log_path, home_shell)
 
@@ -324,7 +317,6 @@ Modules.DeployChainsaw = function(shell) // Deploy ChainSaw to escalate permissi
 	rce_source.set_content(rce_str)
 	build_result = shell.build(write_path + "/chainsaw.src", write_path)
 	rce_source.set_content("")
-	print("Running ChainSaw...")
 	shell.launch(write_path + "/chainsaw")
 
 	root_shell = get_custom_object.chainsaw.shell
@@ -381,10 +373,8 @@ Modules.GetAttackVectors = function(ip_address, metax) // Get attack vectors for
 	end if
 
 	if port.port_number == 0 then
-		print("Getting kernel_cache library...")
 		cached_addresses = VulnerabilityDB.check(library.lib_name, library.version, "kernel_cache.dat")
 	else
-		print("Getting generic library...")
 		cached_addresses = VulnerabilityDB.check(library.lib_name, library.version, "cache.dat")
 	end if
 
@@ -464,7 +454,6 @@ Modules.RCE = function(shell, rce_str, write_path) // Execute a remote command o
 	end if
 
 	rce_source.set_content("")
-	print("Running RCE...")
 	shell.launch(write_path + "/.rce")
 
 end function

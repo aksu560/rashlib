@@ -133,13 +133,11 @@ VulnerabilityDB.check = function(library_name, library_version, db_path)
 	db_file = get_shell.host_computer.File(db_path)
 
 	if not db_file then
-		print("Database file not found.")
 		return []
 	end if
 
 	db_contents = db_file.get_content
 	if not db_contents then
-		print("No content found in database file")
 		return []
 	end if
 

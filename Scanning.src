@@ -14,8 +14,6 @@ Scanning.ScanPorts = function(ip_address)
         return
     end if
 
-    print("Scanning ports at: " + ip_address)
-
     is_lan = is_lan_ip(ip_address)
     router = get_router(ip_address)
 
@@ -28,15 +26,11 @@ Scanning.ScanPorts = function(ip_address)
 		ports = router.used_ports
 	end if
 
-    print(ports)
-
     out_str = "PORT CLOSED LAN_IP\n"
 
     for port in ports
 		out_str = out_str + port.port_number + " " + port.is_closed + " " + port.get_lan_ip + "\n"
 	end for
-
-	print(format_columns(out_str.trim))
 
 	ports.push({
 		"port_number": 0,
@@ -61,8 +55,6 @@ Scanning.GetLibrary = function(metax, ip_address, port)
         return
     end if
 
-    print("Scanning for libraries at: " + ip_address)
-
     router = get_router(ip_address)
 
     if not router then
@@ -76,7 +68,6 @@ Scanning.GetLibrary = function(metax, ip_address, port)
         print("Port is closed")
         return
     end if
-    print(metax)
     net_session = metax.net_use(ip_address, port.port_number)
 
     if not net_session then
@@ -96,8 +87,6 @@ Scanning.GetLibrary = function(metax, ip_address, port)
         return
     end if
 
-    print(format_columns(out_str))
-
     return meta_lib
 end function
 
@@ -111,13 +100,10 @@ Scanning.ScanLibrary = function(metax, library)
         return
     end if
 
-    print("Scanning library: " + library.lib_name + " " + library.version)
-
     unsafe_vals = []
     addresses = metax.scan(library)
 
     if addresses == [] then
-        print("No addresses found")
         return []
     end if
 
@@ -125,8 +111,6 @@ Scanning.ScanLibrary = function(metax, library)
     for address in addresses
         out_str = out_str + library.lib_name + " " + library.version + " " + address + "\n"
     end for
-
-    print(format_columns(out_str))
 
     return addresses
 end function
@@ -145,8 +129,6 @@ Scanning.ScanAddress = function(metax, metalib, address)
         print("No address provided")
         return
     end if
-
-    print("Scanning address: " + address)
 
     unsafe_values = []
 
