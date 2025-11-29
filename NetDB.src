@@ -1,0 +1,18 @@
+NetDB = {}
+
+NetDB.create = function(path, name)
+	host_computer = get_shell.host_computer
+	db_file = host_computer.touch(path, name)
+	if typeof(db_file) == "string" then
+		print("Error creating database file: " + db_file)
+		return
+	end if
+	return db_file
+end function
+
+NetDB.save = function(data, path)
+    db_file = get_shell.host_computer.File(path)
+    if typeof(db_file) == "string" then
+        db_file = NetDB.create()
+    end if
+end function
