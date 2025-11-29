@@ -4,7 +4,7 @@ get_custom_object.in_script = true
 import_code("TypeUtils.src")
 import_code("Scanning.src")
 import_code("Vulnerability.src")
-import_code("Database.src")
+import_code("VulnerabilityDB.src")
 import_code("chainsaw/chainsaw.src")
 
 Modules = {}
